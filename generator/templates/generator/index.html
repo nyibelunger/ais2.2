@@ -21,15 +21,26 @@
     </div>
 
 
-    <form action="{% url 'generator:render_sel_us_ais' %}" method="post">
+    <form action="{% url 'generator:index' %}" method="post">
         <div class="wrapper_box">
             {% csrf_token %}
-            {% for key, value in user_select.items %}
+            {% for day in days_list %}
                 <div class="box">
-                <input type="text" name="date" id="date {{ forloop.counter }} ">
+                    {% comment %}<input type="text" name="date" id="date {{ forloop.counter }} "><br>
+                <label for="date {{ forloop.counter }} ">{{ day }}</label>{% endcomment %}
+                    <select id="date {{ forloop.counter }} " name="date">
+                        <option value=""></option>
+                        <option value="d1">D1</option>
+                        <option value="d2">D2</option>
+                        <option value="z">Z</option>
+                        <option value="n1">N1</option>
+                        <option value="d3">D3</option>
+                    </select>
+                    <label for="date {{ forloop.counter }} ">{{ day }}</label>
                 </div>
             {% endfor %}
-            <input type="submit" value="Generovat AIS"><br>
+            <br>
+            <input type="submit" value="Generovat "><br>
         </div>
     </form>
 
