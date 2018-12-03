@@ -105,18 +105,40 @@
             text-align: center;
         }
 
-        .box input[type=text] {
-            width: 25px;
+        .box_inactive {
+            background-color: #9a9a9a;
+            color: #fff;
+            border-radius: 5px;
+            padding: 1px;
+            font-size: 100%;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .box > input[type=submit] {
+            width: 75px;
+            border-radius: 5px;
+        }
+        .box_submit {
+            width: 75px;
             border-radius: 5px;
         }
 
+        .box:hover {
+            background-color: #7f7f7f;
+        }
+
         .wrapper_box {
-            width: 600px;
+            width: 430px;
+            margin: 0 auto;
+            padding: 10px;
             display: grid;
             grid-gap: 10px;
             grid-template-columns: repeat(7, 50px);
-            grid-template-rows: 50px 50px 50px 50px 50px;
+            grid-template-rows: 50px 50px 50px 50px 50px 50px 50px;
             grid-auto-flow: row;
+            background-color: antiquewhite;
+            border-radius: 3px;
         }
 
         select {

@@ -2,28 +2,20 @@
 
 {% block content %}
 
-    <div class="wrapper_box">
-        <div class="box">
-            <p>1</p>
-            <input type="text">
-        </div>
-        <div class="box">2</div>
-        <div class="box">3</div>
-        <div class="box">4</div>
-        <div class="box">5</div>
-        <div class="box">6</div>
-        <div class="box">7</div>
-        <div class="box">8</div>
-        <div class="box">9</div>
-        <div class="box">10</div>
-        <div class="box">11</div>
-        <div class="box">12</div>
-    </div>
-
-
     <form action="{% url 'generator:index' %}" method="post">
         <div class="wrapper_box">
             {% csrf_token %}
+            <div class="box_inactive">Po</div>
+            <div class="box_inactive">Út</div>
+            <div class="box_inactive">St</div>
+            <div class="box_inactive">Čt</div>
+            <div class="box_inactive">Pá</div>
+            <div class="box_inactive">So</div>
+            <div class="box_inactive">Ne</div>
+            {% for foo in first_day_in_m %}
+                <div class="box_inactive"></div>
+            {% endfor %}
+
             {% for day in days_list %}
                 <div class="box">
                     {% comment %}<input type="text" name="date" id="date {{ forloop.counter }} "><br>
@@ -40,7 +32,7 @@
                 </div>
             {% endfor %}
             <br>
-            <input type="submit" value="Generovat "><br>
+            <input class="box_submit" type="submit" value="Generovat "><br>
         </div>
     </form>
 

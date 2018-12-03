@@ -1,20 +1,32 @@
 from django.shortcuts import render
-#from datetime import datetime
+from django.http import HttpResponse
 import datetime
 import calendar
 from openpyxl import load_workbook
+from openpyxl.writer.excel import save_virtual_workbook
 from czech_holidays import holidays
+
 
 
 # Create your views here.
 def index(request):
     days_in_month = calendar.monthrange(datetime.datetime.now().year, datetime.datetime.now().month)
     days_list = range(1, days_in_month[1] + 1)
+    first_day_in_m = range(0, datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1).weekday())
     if request.method == 'POST':
-        cruncher(dict(request.POST))
+        #vygeneruje AIS
+        vygenerovana_ais = cruncher(dict(request.POST))
+
+        #uloží AIS
+        filename = "AIS" +"_" + str(datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1))
+        response = HttpResponse(save_virtual_workbook(vygenerovana_ais), content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename=%s.xlsx' % filename
+
+        vygenerovana_ais.save(response)
+        return response
 
 
-    return render(request, 'generator/index.html', {'days_list':days_list})
+    return render(request, 'generator/index.html', {'days_list':days_list, "first_day_in_m":first_day_in_m})
 
 
 def cruncher(data_dict):
@@ -59,7 +71,7 @@ def cruncher(data_dict):
             self.vikend = self.den_v_tydnu >= 5
             #self.post_night_shift = False
 
-            #self.nan_pd = [" 07:00", "15:30", "11:30", "12:00",  8]
+
             self.input = []
             self.to_iter = []
 
@@ -140,7 +152,21 @@ def cruncher(data_dict):
         day_obj_list.append(Day(data_index, data[data_index]))
 
     for day_obj in day_obj_list:
-        print("first for")
         day_obj.populator(ws)
 
-    wb.save("sample.xlsx")
+    #wb.save("sample.xlsx")
+
+    #uloží file na disk uživatele
+    # response = HttpResponse(excel_file.read(),
+    #                         content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    #
+    # # set the file name in the Content-Disposition header
+    # response['Content-Disposition'] = 'attachment; filename=%s.xlsx' % normal_filename
+
+    #response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    #response['Content-Disposition'] = 'attachment; filename=mymodel.xlsx'
+
+    #response = HttpResponse(save_virtual_workbook(wb), content_type='application/vnd.ms-excel')
+
+    #wb.save(response)
+    return wb
