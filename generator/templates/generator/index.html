@@ -1,7 +1,7 @@
 {% extends "generator/base.html" %}
 
 {% block content %}
-
+    <h1 class="datum"> {% now "F Y" %}</h1><br>
     <form action="{% url 'generator:index' %}" method="post">
         <div class="wrapper_box">
             {% csrf_token %}
@@ -31,6 +31,11 @@
                     <label for="date {{ forloop.counter }} ">{{ day }}</label>
                 </div>
             {% endfor %}
+            <br>
+
+        </div>
+        <div class="recaptcha">
+            <div class="g-recaptcha" data-sitekey="6LcBYncUAAAAANJxrHi-15DFKZPyNdP9bVmYwrrl"></div>
             <br>
             <input class="box_submit" type="submit" value="Generovat "><br>
         </div>

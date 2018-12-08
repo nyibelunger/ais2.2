@@ -3,5 +3,7 @@ from . import views
 
 app_name = 'generator'
 urlpatterns = [
-    path('', views.index, name='index'),]
+    path('', views.index, name='index'),
+    path('help/', views.help, name='help'),
+]
 
