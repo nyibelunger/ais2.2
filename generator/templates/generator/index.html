@@ -3,8 +3,8 @@
 {% block content %}
     <h1 class="datum"> {% now "F Y" %}</h1><br>
     <form action="{% url 'generator:index' %}" method="post">
+     {% csrf_token %}
         <div class="wrapper_box">
-            {% csrf_token %}
             <div class="box_inactive">Po</div>
             <div class="box_inactive">Út</div>
             <div class="box_inactive">St</div>

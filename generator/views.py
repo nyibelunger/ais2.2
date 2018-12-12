@@ -9,6 +9,8 @@ from czech_holidays import holidays
 import urllib
 import json
 from django.conf import settings
+import requests
+
 
 
 # Create your views here.
@@ -20,22 +22,32 @@ def index(request):
     days_list = range(1, days_in_month[1] + 1)
     first_day_in_m = range(0, datetime.date(datetime.datetime.now().year, datetime.datetime.now().month, 1).weekday())
     if request.method == 'POST':
+        # ''' Begin reCAPTCHA validation '''
+        # recaptcha_response = request.POST.get('g-recaptcha-response')
+        # url = 'https://www.google.com/recaptcha/api/siteverify'
+        # values = {
+        #     'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+        #     'response': recaptcha_response
+        # }
+        # data = urllib.parse.urlencode(values).encode()
+        # req = urllib.request.Request(url, data=data)
+        # response = urllib.request.urlopen(req)
+        # result = json.loads(response.read().decode())
+        # ''' End reCAPTCHA validation '''
+
+        #použití lib requests
         ''' Begin reCAPTCHA validation '''
         recaptcha_response = request.POST.get('g-recaptcha-response')
-        url = 'https://www.google.com/recaptcha/api/siteverify'
-        values = {
+        data = {
             'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
             'response': recaptcha_response
         }
-        data = urllib.parse.urlencode(values).encode()
-        req = urllib.request.Request(url, data=data)
-        response = urllib.request.urlopen(req)
-        result = json.loads(response.read().decode())
+        r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+        result = r.json()
         ''' End reCAPTCHA validation '''
 
 
         if result['success']:
-            print(dict(request.POST))
             # vygeneruje AIS
             vygenerovana_ais = cruncher(dict(request.POST))
 
